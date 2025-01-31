@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Get the **base directory** (automatically detects the script's folder)
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def load_and_process_data(file_path):

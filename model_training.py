@@ -42,21 +42,31 @@ def plot_feature_importance(model, feature_names, model_name, X_test, y_test):
     else:
         return  
 
+    # Convert to DataFrame and sort values
     feature_importance = pd.DataFrame({'Feature': feature_names, 'Importance': importance})
     feature_importance = feature_importance.sort_values(by='Importance', ascending=False)
 
-    plt.figure(figsize=(8, 6))
-    sns.barplot(x='Importance', y='Feature', data=feature_importance)
-    plt.title(f'Feature Importance for {model_name}')
-    plt.xlabel('Importance')
-    plt.ylabel('Feature')
+    # Plot with better text placement
+    plt.figure(figsize=(10, 6))
+    ax = sns.barplot(x='Importance', y='Feature', data=feature_importance, orient='h')
+    plt.title(f'Feature Importance for {model_name}', fontsize=14)
+    plt.xlabel('Importance', fontsize=12)
+    plt.ylabel('Feature', fontsize=12)
+
+    # **Better text labels outside bars**
+    for index, value in enumerate(feature_importance['Importance']):
+        ax.text(value + (max(feature_importance['Importance']) * 0.01), index, f'{value:.3f}', 
+                ha='left', va='center', fontsize=10, color='black')  # Place labels to the right
 
     # Save the plot
+    plt.tight_layout()
     plt.savefig(os.path.join(EVALUATION_DIR, f"feature_importance_{model_name}.png"))
     plt.close('all')
 
+
+
+
 def main_training():
-    # Load preprocessed data with relative paths
     X_train = pd.read_csv(os.path.join(PROCESSED_DIR, 'X_train.csv'))
     X_test = pd.read_csv(os.path.join(PROCESSED_DIR, 'X_test.csv'))
     y_train = pd.read_csv(os.path.join(PROCESSED_DIR, 'y_train.csv'))['diagnosis']

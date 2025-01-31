@@ -16,7 +16,7 @@ if __name__ == "__main__":
     # Ensure processed directory exists
     os.makedirs(processed_path, exist_ok=True)
 
-    # ✅ Load data only ONCE
+    
     print("Loading and processing data...")
     data = load_and_process_data(file_path)
 

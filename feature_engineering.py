@@ -5,15 +5,17 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from imblearn.over_sampling import SMOTE
 
-def feature_engineering(data, processed_path):  # ✅ Accepts `data` directly instead of `file_path`
+def feature_engineering(data, processed_path):
     print("Feature Engineering started...")
-
-    # ✅ Remove redundant dataset loading
-    # ❌ Do NOT call load_and_process_data(file_path) again
 
     # Encode target variable ('diagnosis') into numeric format
     label_encoder = LabelEncoder()
     data['diagnosis'] = label_encoder.fit_transform(data['diagnosis'])  # B=0, M=1
+
+    # Drop standard error (_se) features as per analysis
+    se_columns = [col for col in data.columns if '_se' in col]
+    data = data.drop(columns=se_columns, errors='ignore')
+    print(f"Dropped standard error features: {se_columns}")
 
     # Define features and target
     X = data.drop(columns=['id', 'diagnosis'], errors='ignore')
